@@ -1,158 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>El Oráculo</title>
-<!-- Script para conectar con el panel de administración de Netlify -->
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
-</script>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Oráculo | La verdad en tiempos de ruido</title>
+  <style>
     :root {
-    --bg-color: #f9f9f7;
-    --text-color: #1a1a1a;
-    --header-bg: #111;
-    --header-text: #fff;
-    --card-bg: #fff;
-    --border-color: #ddd;
+      --bg-color: #f7f7f7;
+      --card-bg: #ffffff;
+      --text-color: #1a1a1a;
+      --text-muted: #555555;
+      --accent: #b30000;
+      --border-color: #e0e0e0;
+      --header-bg: #0f0f0f;
+      --header-text: #ffffff;
     }
 
     [data-theme="dark"] {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --header-bg: #000;
-    --header-text: #f1f1f1;
-    --card-bg: #1e1e1e;
-    --border-color: #333;
-    }
-    
-
-    body {
-    margin: 0;
-    font-family: 'Georgia', serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 0.3s, color 0.3s;
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f0f0f0;
+      --text-muted: #aaaaaa;
+      --accent: #ff4d4d;
+      --border-color: #333333;
+      --header-bg: #000000;
+      --header-text: #ffffff;
     }
 
-    header {
-    background-color: var(--header-bg);
-    color: var(--header-text);
-    text-align: center;
-    padding: 2rem 1rem;
-    border-bottom: 4px solid #b30000;
-    position: relative;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Georgia', serif; background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s, color 0.3s; }
 
-    h1 {
-    font-size: 3rem;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    }
+    header { background-color: var(--header-bg); color: var(--header-text); text-align: center; padding: 35px 20px 20px; position: relative; border-bottom: 4px solid var(--accent); }
+    header h1 { font-size: 3rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px; font-weight: 900; }
+    header p { font-size: 0.95rem; font-style: italic; color: #ccc; }
 
-    .subtitle {
-    font-family: Arial, sans-serif;
-    font-size: 0.9rem;
-    color: #aaa;
-    margin-top: 10px;
-    }
+    .theme-toggle { position: absolute; top: 15px; right: 20px; background: transparent; border: 1px solid #666; color: #fff; padding: 6px 12px; font-size: 0.8rem; cursor: pointer; border-radius: 4px; }
+    .theme-toggle:hover { background: rgba(255,255,255,0.1); }
 
-    .theme-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: 1px solid var(--header-text);
-    color: var(--header-text);
-    padding: 5px 10px;
-    cursor: pointer;
-    font-family: Arial, sans-serif;
-    }
+    nav { display: flex; justify-content: center; gap: 25px; padding: 15px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); font-family: sans-serif; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; }
+    nav button { background: none; border: none; color: var(--text-color); cursor: pointer; padding: 5px 10px; font-family: inherit; font-size: inherit; font-weight: inherit; }
+    nav button.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
 
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 15px;
-      background-color: var(--card-bg);
-      border-bottom: 1px solid var(--border-color);
-      font-family: Arial, sans-serif;
-    }
+    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
 
-    nav a {
-      color: var(--text-color);
-      text-decoration: none;
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
+    .card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 25px; border-radius: 4px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .category { color: var(--accent); font-family: sans-serif; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
+    .card h2 { font-size: 1.4rem; margin-bottom: 12px; line-height: 1.3; }
+    .card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
+    .read-more { color: var(--accent); font-family: sans-serif; font-size: 0.85rem; font-weight: bold; text-decoration: none; align-self: flex-start; }
 
-    nav a:hover {
-      color: #b30000;
-    }
-
-    main {
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      padding: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .tag {
-      font-family: Arial, sans-serif;
-      font-size: 0.75rem;
-      color: #b30000;
-      text-transform: uppercase;
-      font-weight: bold;
-    }
-
-    .card h2 {
-      font-size: 1.5rem;
-      margin: 10px 0;
-    }
-
-    .card p {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #555;
-    }
-
-    [data-theme="dark"] .card p {
-      color: #aaa;
-    }
-
-    .read-more {
-      display: inline-block;
-      margin-top: 15px;
-      font-family: Arial, sans-serif;
-      font-size: 0.9rem;
-      color: #b30000;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    /* Modal para ver artículo completo */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: var(--card-bg); color: var(--text-color); max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 35px; border-radius: 6px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; background: none; border: none; color: var(--text-color); cursor: pointer; }
+    .modal-category { color: var(--accent); font-family: sans-serif; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+    .modal-title { font-size: 2rem; margin-bottom: 15px; line-height: 1.2; }
+    .modal-body { font-size: 1.05rem; line-height: 1.7; color: var(--text-color); margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -160,71 +64,128 @@
   <header>
     <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
     <h1>El Oráculo</h1>
-    <div class="subtitle">La verdad en tiempos de ruido | Edición Digital</div>
+    <p>La verdad en tiempos de ruido | Edición Digital</p>
   </header>
 
   <nav>
-    <a href="#">Actualidad</a>
-    <a href="#">Historia</a>
-    <a href="#">Cultura</a>
-    <a href="#">Opinión</a>
+    <button class="nav-btn active" onclick="filterCategory('TODAS', this)">Todas</button>
+    <button class="nav-btn" onclick="filterCategory('ACTUALIDAD', this)">Actualidad</button>
+    <button class="nav-btn" onclick="filterCategory('HISTORIA', this)">Historia</button>
+    <button class="nav-btn" onclick="filterCategory('CULTURA', this)">Cultura</button>
+    <button class="nav-btn" onclick="filterCategory('OPINIÓN', this)">Opinión</button>
   </nav>
 
-  <main>
-    <!-- Artículo 1 -->
-    <article class="card">
-      <div class="tag">Historia</div>
-      <h2>El Bogotazo: Las horas que cambiaron el país</h2>
-      <p>Un análisis de los hechos históricos y cómo la capital se transformó para siempre tras aquel 9 de abril. Detalles de un evento que marcó a toda una generación.</p>
-      <a class="read-more">Leer artículo completo →</a>
-    </article>
-
-    <!-- Artículo 2 -->
-    <article class="card">
-      <div class="tag">Cultura</div>
-      <h2>El arte detrás del café de especialidad</h2>
-      <p>No todo el café es igual. Descubre los tipos de granos de alta calidad en Colombia y por qué la forma en que lo preparas en casa cambia todo el sabor.</p>
-      <a class="read-more">Leer artículo completo →</a>
-    </article>
-
-    <!-- Artículo 3 -->
-    <article class="card">
-      <div class="tag">Opinión</div>
-      <h2>El poder de una rutina matutina</h2>
-      <p>Leer temprano, organizar las ideas y escuchar buena música. Cómo estructurar tus mañanas puede ser la clave para escribir mejores columnas y crear con libertad.</p>
-      <a class="read-more">Leer artículo completo →</a>
-    </article>
-    
-    <!-- Artículo 4 -->
-    <article class="card">
-      <div class="tag">Actualidad</div>
-      <h2>Creación de beats y la nueva ola musical</h2>
-      <p>Exploramos cómo los productores independientes están definiendo los sonidos que escucharemos en los próximos años utilizando herramientas desde sus propias casas.</p>
-      <a class="read-more">Leer artículo completo →</a>
-    </article>
+  <main class="container" id="news-container">
+    <!-- Artículos iniciales -->
   </main>
 
+  <!-- Modal -->
+  <div class="modal" id="article-modal" onclick="closeModalOnOuterClick(event)">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">&times;</button>
+      <div class="modal-category" id="modal-cat"></div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
   <script>
-    // Función sencilla para modo claro/oscuro
-    function toggleTheme() {
-      const body = document.body;
-      if (body.getAttribute('data-theme') === 'dark') {
-        body.removeAttribute('data-theme');
+    // Listado de artículos (Aquí puedes agregar, editar o eliminar noticias fácilmente)
+    const articles = [
+      {
+        id: 1,
+        category: "HISTORIA",
+        title: "El Bogotazo: Las horas que cambiaron el país",
+        excerpt: "Un análisis de los hechos históricos y cómo la capital se transformó para siempre tras aquel 9 de abril.",
+        content: `El 9 de abril de 1948 representa uno de los momentos más trágicos y determinantes de la historia contemporánea de Colombia. El asesinato del líder político Jorge Eliécer Gaitán desencadenó una ola de violencia desmedida que destruyó gran parte del centro histórico de Bogotá y marcó el rumbo político del país durante las décadas posteriores.<br><br>Aquel día, la indignación popular se apoderó de las calles principales de la capital. La respuesta masiva dejó huellas imborrables en la memoria colectiva, transformando no solo el panorama urbano, sino también las dinámicas sociales y políticas que definirían la mitad del siglo XX en Colombia.`
+      },
+      {
+        id: 2,
+        category: "CULTURA",
+        title: "El arte detrás del café de especialidad",
+        excerpt: "No todo el café es igual. Descubre los tipos de granos de alta calidad en Colombia y por qué la preparación marca la diferencia.",
+        content: `Colombia es mundialmente reconocida por producir algunos de los mejores granos de café de variedad arábiga. Sin embargo, en los últimos años ha surgido una revolución orientada hacia el café de especialidad y origen único.<br><br>Desde los perfiles frutales y cítricos cosechados en regiones altas hasta los procesos de fermentación e infusión controlada en finca, el arte del barismo busca extraer la máxima complejidad de notas en cada taza. Entender la diferencia entre un tinto convencional y un filtro artesanal permite apreciar el inmenso esfuerzo de los caficultores locales.`
+      },
+      {
+        id: 3,
+        category: "OPINIÓN",
+        title: "El poder de una rutina matutina",
+        excerpt: "Leer temprano, organizar las ideas y escuchar buena música. Estructurar tus mañanas es la clave para la creación constante.",
+        content: `El ritmo acelerado del entorno digital moderno nos expone a una sobrecarga constante de información. Reservar las primeras horas de la mañana para el silencio, la lectura enfocada y la escritura de ideas propias es una de las decisiones más estratégicas para cualquier creador.<br><br>Estructurar un espacio matutino libre de distracciones no solo mejora la concentración, sino que fomenta el pensamiento crítico y la disciplina. Es durante este tiempo protegido donde surgen las mejores columnas de opinión y las obras más auténticas.`
+      },
+      {
+        id: 4,
+        category: "ACTUALIDAD",
+        title: "Creación de beats y la nueva ola musical",
+        excerpt: "Exploramos cómo los productores independientes están definiendo los sonidos que escucharemos en los próximos años.",
+        content: `La democratización de las herramientas digitales de producción musical ha abierto las puertas a una generación de beatmakers y productores independientes. Desde estudios en casa, jóvenes creadores están fusionando ritmos urbanos con samples clásicos y texturas experimentales.<br><br>Este movimiento no solo está transformando la industria independiente, sino que redefine la cultura del consumo musical global, donde la autenticidad y el diseño sonoro tienen más valor que las grandes firmas discográficas.`
+      }
+    ];
+
+    const container = document.getElementById('news-container');
+
+    function renderArticles(list) {
+      container.innerHTML = '';
+      if(list.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-family: sans-serif;">No hay artículos disponibles en esta categoría.</p>';
+        return;
+      }
+      list.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.onclick = () => openModal(item);
+        card.innerHTML = `
+          <div>
+            <div class="category">${item.category}</div>
+            <h2>${item.title}</h2>
+            <p>${item.excerpt}</p>
+          </div>
+          <span class="read-more">Leer artículo completo &rarr;</span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterCategory(cat, btn) {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (cat === 'TODAS') {
+        renderArticles(articles);
       } else {
-        body.setAttribute('data-theme', 'dark');
+        const filtered = articles.filter(a => a.category === cat);
+        renderArticles(filtered);
       }
     }
 
-    // Código necesario para que Netlify Identity funcione tras iniciar sesión
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
+    function openModal(article) {
+      document.getElementById('modal-cat').innerText = article.category;
+      document.getElementById('modal-title').innerText = article.title;
+      document.getElementById('modal-body').innerHTML = article.content;
+      document.getElementById('article-modal').style.display = 'flex';
     }
+
+    function closeModal() {
+      document.getElementById('article-modal').style.display = 'none';
+    }
+
+    function closeModalOnOuterClick(e) {
+      if (e.target.id === 'article-modal') {
+        closeModal();
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.body.getAttribute('data-theme');
+      if (current === 'dark') {
+        document.body.removeAttribute('data-theme');
+      } else {
+        document.body.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    // Carga inicial de artículos
+    renderArticles(articles);
   </script>
 </body>
 </html>
