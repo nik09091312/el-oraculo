@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Oráculo</title>
+<!-- Script para conectar con el panel de administración de Netlify -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+</script>
+<style>
+    :root {
+    --bg-color: #f9f9f7;
+    --text-color: #1a1a1a;
+    --header-bg: #111;
+    --header-text: #fff;
+    --card-bg: #fff;
+    --border-color: #ddd;
+    }
+
+    [data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --header-bg: #000;
+    --header-text: #f1f1f1;
+    --card-bg: #1e1e1e;
+    --border-color: #333;
+    }
+    
+
+    body {
+    margin: 0;
+    font-family: 'Georgia', serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    }
+
+    header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    text-align: center;
+    padding: 2rem 1rem;
+    border-bottom: 4px solid #b30000;
+    position: relative;
+    }
+
+    h1 {
+    font-size: 3rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    }
+
+    .subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: 10px;
+    }
+
+    .theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 1px solid var(--header-text);
+    color: var(--header-text);
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      font-family: Arial, sans-serif;
+    }
+
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      color: #b30000;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tag {
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      color: #b30000;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #555;
+    }
+
+    [data-theme="dark"] .card p {
+      color: #aaa;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 15px;
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      color: #b30000;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
+    <h1>El Oráculo</h1>
+    <div class="subtitle">La verdad en tiempos de ruido | Edición Digital</div>
+  </header>
+
+  <nav>
+    <a href="#">Actualidad</a>
+    <a href="#">Historia</a>
+    <a href="#">Cultura</a>
+    <a href="#">Opinión</a>
+  </nav>
+
+  <main>
+    <!-- Artículo 1 -->
+    <article class="card">
+      <div class="tag">Historia</div>
+      <h2>El Bogotazo: Las horas que cambiaron el país</h2>
+      <p>Un análisis de los hechos históricos y cómo la capital se transformó para siempre tras aquel 9 de abril. Detalles de un evento que marcó a toda una generación.</p>
+      <a class="read-more">Leer artículo completo →</a>
+    </article>
+
+    <!-- Artículo 2 -->
+    <article class="card">
+      <div class="tag">Cultura</div>
+      <h2>El arte detrás del café de especialidad</h2>
+      <p>No todo el café es igual. Descubre los tipos de granos de alta calidad en Colombia y por qué la forma en que lo preparas en casa cambia todo el sabor.</p>
+      <a class="read-more">Leer artículo completo →</a>
+    </article>
+
+    <!-- Artículo 3 -->
+    <article class="card">
+      <div class="tag">Opinión</div>
+      <h2>El poder de una rutina matutina</h2>
+      <p>Leer temprano, organizar las ideas y escuchar buena música. Cómo estructurar tus mañanas puede ser la clave para escribir mejores columnas y crear con libertad.</p>
+      <a class="read-more">Leer artículo completo →</a>
+    </article>
+    
+    <!-- Artículo 4 -->
+    <article class="card">
+      <div class="tag">Actualidad</div>
+      <h2>Creación de beats y la nueva ola musical</h2>
+      <p>Exploramos cómo los productores independientes están definiendo los sonidos que escucharemos en los próximos años utilizando herramientas desde sus propias casas.</p>
+      <a class="read-more">Leer artículo completo →</a>
+    </article>
+  </main>
+
+  <script>
+    // Función sencilla para modo claro/oscuro
+    function toggleTheme() {
+      const body = document.body;
+      if (body.getAttribute('data-theme') === 'dark') {
+        body.removeAttribute('data-theme');
+      } else {
+        body.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    // Código necesario para que Netlify Identity funcione tras iniciar sesión
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
