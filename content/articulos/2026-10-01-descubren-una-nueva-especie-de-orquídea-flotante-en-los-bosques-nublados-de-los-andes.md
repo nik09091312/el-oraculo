@@ -5,7 +5,7 @@ excerpt: El hallazgo, realizado por botánicos locales, revela una adaptación
   única que permite a la planta crecer sin tocar la tierra ni la corteza de los
   árboles.
 author: Periodista Nicolas
-category: Cultura
+category: Opinión
 date: 2026-09-30T20:57:00.000-05:00
 ---
 Un equipo de botánicos e investigadores de la región confirmó el hallazgo de una fascinante variedad de orquídea en los bosques de niebla. Bautizada preliminarmente como *Orchis aeris*, esta especie posee raíces aéreas ultra ligeras que atrapan la humedad del ambiente mediante un sistema de condensación único.
