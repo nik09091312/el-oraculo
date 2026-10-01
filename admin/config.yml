@@ -2,7 +2,8 @@ backend:
   name: github
   repo: nik09091312/el-oraculo
   branch: main
-  site_domain: el-oraculo.pages.dev
+  base_url: https://decap-cms-oauth-provider.vercel.app
+  auth_endpoint: /api/auth
 
 media_folder: "images"
 public_folder: "/images"

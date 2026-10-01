@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Contraluz - Periodico Digital</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Cargar Netlify Identity widget para la administración -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <title>A Contraluz - Periódico Digital</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
@@ -19,7 +17,7 @@
 
     <main class="main-content">
         <section class="articles-container" id="articles-list">
-            <!-- Los artículos publicados desde Decap CMS / Netlify CMS se cargarán aquí dinámicamente -->
+            <!-- Los artículos publicados se cargarán dinámicamente -->
             <article class="featured-article">
                 <h2>Cargando noticias principales...</h2>
                 <p>Las últimas publicaciones aparecerán en este espacio.</p>
@@ -31,16 +29,5 @@
         <p>&copy; 2026 A Contraluz. Todos los derechos reservados.</p>
     </footer>
 
-    <script>
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
-    </script>
 </body>
 </html>
