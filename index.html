@@ -50,7 +50,6 @@
     .card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
     .read-more { color: var(--accent); font-family: sans-serif; font-size: 0.85rem; font-weight: bold; text-decoration: none; align-self: flex-start; }
 
-    /* Modal para ver artículo completo */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
     .modal-content { background: var(--card-bg); color: var(--text-color); max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 35px; border-radius: 6px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
     .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; background: none; border: none; color: var(--text-color); cursor: pointer; }
@@ -76,10 +75,9 @@
   </nav>
 
   <main class="container" id="news-container">
-    <!-- Artículos iniciales -->
+    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-family: sans-serif;">Cargando artículos...</p>
   </main>
 
-  <!-- Modal -->
   <div class="modal" id="article-modal" onclick="closeModalOnOuterClick(event)">
     <div class="modal-content">
       <button class="close-modal" onclick="closeModal()">&times;</button>
@@ -90,44 +88,75 @@
   </div>
 
   <script>
-    // Listado de artículos (Aquí puedes agregar, editar o eliminar noticias fácilmente)
-    const articles = [
-      {
-        id: 1,
-        category: "HISTORIA",
-        title: "El Bogotazo: Las horas que cambiaron el país",
-        excerpt: "Un análisis de los hechos históricos y cómo la capital se transformó para siempre tras aquel 9 de abril.",
-        content: `El 9 de abril de 1948 representa uno de los momentos más trágicos y determinantes de la historia contemporánea de Colombia. El asesinato del líder político Jorge Eliécer Gaitán desencadenó una ola de violencia desmedida que destruyó gran parte del centro histórico de Bogotá y marcó el rumbo político del país durante las décadas posteriores.<br><br>Aquel día, la indignación popular se apoderó de las calles principales de la capital. La respuesta masiva dejó huellas imborrables en la memoria colectiva, transformando no solo el panorama urbano, sino también las dinámicas sociales y políticas que definirían la mitad del siglo XX en Colombia.`
-      },
-      {
-        id: 2,
-        category: "CULTURA",
-        title: "El arte detrás del café de especialidad",
-        excerpt: "No todo el café es igual. Descubre los tipos de granos de alta calidad en Colombia y por qué la preparación marca la diferencia.",
-        content: `Colombia es mundialmente reconocida por producir algunos de los mejores granos de café de variedad arábiga. Sin embargo, en los últimos años ha surgido una revolución orientada hacia el café de especialidad y origen único.<br><br>Desde los perfiles frutales y cítricos cosechados en regiones altas hasta los procesos de fermentación e infusión controlada en finca, el arte del barismo busca extraer la máxima complejidad de notas en cada taza. Entender la diferencia entre un tinto convencional y un filtro artesanal permite apreciar el inmenso esfuerzo de los caficultores locales.`
-      },
-      {
-        id: 3,
-        category: "OPINIÓN",
-        title: "El poder de una rutina matutina",
-        excerpt: "Leer temprano, organizar las ideas y escuchar buena música. Estructurar tus mañanas es la clave para la creación constante.",
-        content: `El ritmo acelerado del entorno digital moderno nos expone a una sobrecarga constante de información. Reservar las primeras horas de la mañana para el silencio, la lectura enfocada y la escritura de ideas propias es una de las decisiones más estratégicas para cualquier creador.<br><br>Estructurar un espacio matutino libre de distracciones no solo mejora la concentración, sino que fomenta el pensamiento crítico y la disciplina. Es durante este tiempo protegido donde surgen las mejores columnas de opinión y las obras más auténticas.`
-      },
-      {
-        id: 4,
-        category: "ACTUALIDAD",
-        title: "Creación de beats y la nueva ola musical",
-        excerpt: "Exploramos cómo los productores independientes están definiendo los sonidos que escucharemos en los próximos años.",
-        content: `La democratización de las herramientas digitales de producción musical ha abierto las puertas a una generación de beatmakers y productores independientes. Desde estudios en casa, jóvenes creadores están fusionando ritmos urbanos con samples clásicos y texturas experimentales.<br><br>Este movimiento no solo está transformando la industria independiente, sino que redefine la cultura del consumo musical global, donde la autenticidad y el diseño sonoro tienen más valor que las grandes firmas discográficas.`
-      }
-    ];
+    // IMPORTANTE: Reemplaza con tu nombre de usuario de GitHub y el nombre exacto de tu repositorio
+    const GITHUB_USER = "nik0909131"; 
+    const REPO_NAME = "el-oraculo"; // Cambia esto si tu repositorio tiene otro nombre en GitHub
 
+    let allArticles = [];
     const container = document.getElementById('news-container');
+
+    // Función para parsear archivos Markdown con Frontmatter (---)
+    function parseFrontmatter(text) {
+      const result = { attributes: {}, body: '' };
+      const lines = text.split('\n');
+      if (lines[0].trim() === '---') {
+        let i = 1;
+        while (i < lines.length && lines[i].trim() !== '---') {
+          const line = lines[i];
+          const colonIdx = line.indexOf(':');
+          if (colonIdx !== -1) {
+            const key = line.slice(0, colonIdx).trim();
+            let value = line.slice(colonIdx + 1).trim();
+            if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+              value = value.slice(1, -1);
+            }
+            result.attributes[key] = value;
+          }
+          i++;
+        }
+        result.body = lines.slice(i + 1).join('\n').trim();
+      } else {
+        result.body = text;
+      }
+      return result;
+    }
+
+    async function loadCMSArticles() {
+      try {
+        const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/content/articulos`);
+        if (!response.ok) throw new Error('No se encontraron artículos publicados aún.');
+        
+        const files = await response.json();
+        const loaded = [];
+
+        for (const file of files) {
+          if (file.name.endsWith('.md')) {
+            const res = await fetch(file.download_url);
+            const text = await res.text();
+            const parsed = parseFrontmatter(text);
+            
+            loaded.push({
+              title: parsed.attributes.title || 'Sin título',
+              category: (parsed.attributes.category || 'GENERAL').toUpperCase(),
+              excerpt: parsed.attributes.excerpt || parsed.body.slice(0, 150) + '...',
+              content: parsed.body.replace(/\n/g, '<br>'),
+              date: parsed.attributes.date || ''
+            });
+          }
+        }
+
+        allArticles = loaded.reverse(); // Mostrar los más recientes primero
+        renderArticles(allArticles);
+      } catch (err) {
+        console.warn(err);
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-family: sans-serif;">Aún no hay artículos publicados en el administrador.</p>';
+      }
+    }
 
     function renderArticles(list) {
       container.innerHTML = '';
-      if(list.length === 0) {
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-family: sans-serif;">No hay artículos disponibles en esta categoría.</p>';
+      if (list.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-family: sans-serif;">No hay artículos en esta categoría.</p>';
         return;
       }
       list.forEach(item => {
@@ -151,9 +180,9 @@
       btn.classList.add('active');
 
       if (cat === 'TODAS') {
-        renderArticles(articles);
+        renderArticles(allArticles);
       } else {
-        const filtered = articles.filter(a => a.category === cat);
+        const filtered = allArticles.filter(a => a.category === cat);
         renderArticles(filtered);
       }
     }
@@ -170,9 +199,7 @@
     }
 
     function closeModalOnOuterClick(e) {
-      if (e.target.id === 'article-modal') {
-        closeModal();
-      }
+      if (e.target.id === 'article-modal') closeModal();
     }
 
     function toggleTheme() {
@@ -184,8 +211,8 @@
       }
     }
 
-    // Carga inicial de artículos
-    renderArticles(articles);
+    // Cargar artículos automáticamente al entrar
+    loadCMSArticles();
   </script>
 </body>
 </html>
