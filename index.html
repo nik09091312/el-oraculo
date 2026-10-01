@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contraluz | La verdad en tiempos de ruido</title>
+  <title>A Contraluz | La verdad en tiempos de ruido</title>
   <style>
     :root {
       --bg-color: #f7f7f7;
@@ -62,7 +62,7 @@
 
   <header>
     <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
-    <h1>Contraluz</h1>
+    <h1>A Contraluz</h1>
     <p>La verdad en tiempos de ruido | Edición Digital</p>
   </header>
 
@@ -136,7 +136,6 @@
     async function loadCMSArticles() {
       try {
         let files = null;
-        // Estrategia de búsqueda automática para evitar problemas de tildes o rutas
         const attempts = [
           { repo: "el-or%C3%A1culo", path: "contenido/%20art%C3%ADculos" },
           { repo: "el-oraculo", path: "contenido/articulos" },
@@ -147,9 +146,7 @@
           try {
             files = await fetchDirectory(attempt.repo, attempt.path);
             if (files && Array.isArray(files)) break;
-          } catch (e) {
-            // prueba la siguiente ruta
-          }
+          } catch (e) {}
         }
 
         if (!files || !Array.isArray(files)) {
