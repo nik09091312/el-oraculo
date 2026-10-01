@@ -2,6 +2,7 @@ backend:
   name: github
   repo: nik09091312/el-oraculo
   branch: main
+  site_domain: el-oraculo.pages.dev
 
 media_folder: "images"
 public_folder: "/images"
