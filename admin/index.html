@@ -6,7 +6,42 @@
   <title>Panel de Administración | El Oráculo</title>
 </head>
 <body>
-  <!-- Carga limpia de Decap CMS leyendo directamente config.yml -->
+  <!-- Deshabilitamos el auto-init para tomar control total de la autenticación -->
+  <script>
+    window.CMS_MANUAL_INIT = true;
+  </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    window.onload = function() {
+      CMS.init({
+        config: {
+          backend: {
+            name: 'github',
+            repo: 'nik09091312/el-oraculo',
+            branch: 'principal',
+            auth_type: 'implicit'
+          },
+          media_folder: 'images',
+          public_folder: '/images',
+          collections: [
+            {
+              name: 'articulos',
+              label: 'Artículos',
+              folder: 'articulos',
+              create: true,
+              slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
+              fields: [
+                { label: 'Título', name: 'title', widget: 'string' },
+                { label: 'Fecha de publicación', name: 'date', widget: 'datetime' },
+                { label: 'Imagen destacada', name: 'image', widget: 'image', required: false },
+                { label: 'Resumen / Copete', name: 'summary', widget: 'text' },
+                { label: 'Cuerpo del artículo', name: 'body', widget: 'markdown' }
+              ]
+            }
+          ]
+        }
+      });
+    };
+  </script>
 </body>
 </html>
