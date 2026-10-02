@@ -6,7 +6,6 @@
   <title>Panel de Administración | El Oráculo</title>
 </head>
 <body>
-  <!-- Deshabilitamos el auto-init para tomar control total de la autenticación -->
   <script>
     window.CMS_MANUAL_INIT = true;
   </script>
@@ -15,6 +14,7 @@
     window.onload = function() {
       CMS.init({
         config: {
+          load_config_file: false,
           backend: {
             name: 'github',
             repo: 'nik09091312/el-oraculo',
