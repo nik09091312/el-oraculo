@@ -115,6 +115,7 @@
   <script>
     const REPO_OWNER = "nik09091312";
     const REPO_NAME = "el-oraculo";
+    const DEFAULT_BRANCH = "main"; // Cambiado a main
     const CLAVE_CORRECTA = "Oraculo2026*";
 
     const loginCard = document.getElementById('login-card');
@@ -192,7 +193,7 @@ ${body}`;
           body: JSON.stringify({
             message: `Agregar noticia: ${title}`,
             content: btoa(unescape(encodeURIComponent(content))),
-            branch: 'principal'
+            branch: DEFAULT_BRANCH
           })
         });
 
@@ -201,11 +202,12 @@ ${body}`;
           document.getElementById('article-form').reset();
           loadPublishedArticles();
         } else {
-          throw new Error('Error de publicación');
+          const errData = await response.json();
+          throw new Error(errData.message || 'Error de publicación');
         }
       } catch (err) {
         msg.className = "alert alert-error";
-        msg.textContent = "Error al guardar. Revisa tu Token de GitHub.";
+        msg.textContent = `Error (${err.message}). Revisa si el Token tiene permisos 'repo'.`;
       }
     });
 
@@ -214,12 +216,12 @@ ${body}`;
       const token = localStorage.getItem('gh_token');
 
       try {
-        const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/articulos?ref=principal`, {
+        const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/articulos?ref=${DEFAULT_BRANCH}`, {
           headers: { 'Authorization': `token ${token}` }
         });
         
         if (!res.ok) {
-          container.innerHTML = "<p style='color:#666; font-size:0.9rem;'>No hay noticias en el repositorio.</p>";
+          container.innerHTML = "<p style='color:#666; font-size:0.9rem;'>No hay noticias aún en el repositorio.</p>";
           return;
         }
 
@@ -253,7 +255,7 @@ ${body}`;
         body: JSON.stringify({
           message: `Eliminar noticia ${path}`,
           sha: sha,
-          branch: 'principal'
+          branch: DEFAULT_BRANCH
         })
       });
 
