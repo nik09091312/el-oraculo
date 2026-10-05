@@ -3,37 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A Contraluz / El Oráculo</title>
+  <title>A Contraluz | Periodismo Independiente</title>
   <style>
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; margin: 0; padding: 0; }
-    header { background: #1e293b; padding: 24px; text-align: center; border-bottom: 2px solid #0284c7; }
-    h1 { margin: 0; font-size: 2.2rem; color: #38bdf8; letter-spacing: 2px; }
-    p.tagline { color: #94a3b8; font-style: italic; margin-top: 6px; }
+    * { box-sizing: border-box; }
+    body { background-color: #fcfcfc; color: #111111; font-family: 'Georgia', 'Times New Roman', serif; margin: 0; padding: 0; line-height: 1.6; }
     
-    /* Navegación Interactiva */
-    nav { background: #0f172a; display: flex; justify-content: center; gap: 15px; padding: 12px; border-bottom: 1px solid #334155; }
-    nav button { background: transparent; color: #94a3b8; border: 1px solid #334155; padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: 0.2s; }
-    nav button.active, nav button:hover { background: #0284c7; color: #fff; border-color: #0284c7; }
+    header { background: #ffffff; padding: 40px 20px 20px; text-align: center; border-bottom: 4px solid #cc0000; }
+    h1.brand-title { font-size: 3rem; font-weight: 900; margin: 0; letter-spacing: 3px; font-family: 'Times New Roman', serif; text-transform: uppercase; color: #000000; }
+    p.tagline { color: #555555; font-style: italic; margin-top: 8px; font-size: 1.05rem; }
+    
+    /* Navegación por secciones */
+    nav { background: #ffffff; display: flex; justify-content: center; gap: 10px; padding: 12px 20px; border-bottom: 1px solid #dddddd; flex-wrap: wrap; }
+    nav button { background: transparent; color: #333333; border: 1px solid #cccccc; padding: 6px 16px; font-family: system-ui, sans-serif; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+    nav button.active, nav button:hover { background: #cc0000; color: #ffffff; border-color: #cc0000; }
 
-    main { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
-    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-    .card { background: #1e293b; border-radius: 8px; overflow: hidden; border: 1px solid #334155; display: flex; flex-direction: column; }
-    .card img { width: 100%; height: 180px; object-fit: cover; }
-    .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
-    .category-tag { font-size: 0.75rem; text-transform: uppercase; color: #38bdf8; font-weight: bold; margin-bottom: 8px; }
-    .card-title { font-size: 1.2rem; margin: 0 0 10px 0; color: #fff; }
-    .card-summary { font-size: 0.9rem; color: #cbd5e1; flex: 1; }
+    main { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+    
+    .card { background: #ffffff; border: 1px solid #e0e0e0; display: flex; flex-direction: column; overflow: hidden; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
+    .card img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #eee; }
+    .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+    .category-tag { font-family: system-ui, sans-serif; font-size: 0.75rem; text-transform: uppercase; color: #cc0000; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
+    .card-title { font-size: 1.4rem; margin: 0 0 10px 0; color: #000000; line-height: 1.25; }
+    .card-summary { font-size: 0.95rem; color: #444444; flex: 1; margin: 0; }
+
+    footer { text-align: center; padding: 30px; border-top: 1px solid #dddddd; color: #777777; font-family: system-ui, sans-serif; font-size: 0.85rem; margin-top: 60px; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>A CONTRALUZ</h1>
+    <h1 class="brand-title">A CONTRALUZ</h1>
     <p class="tagline">Periodismo independiente, historias sin filtro</p>
   </header>
 
-  <!-- SECCIONES INTERACTIVAS -->
   <nav>
     <button class="active" onclick="filterCategory('todas', this)">Todas</button>
     <button onclick="filterCategory('hoy', this)">Hoy</button>
@@ -44,9 +48,13 @@
 
   <main>
     <div id="news-container" class="news-grid">
-      <p style="text-align: center; color: #94a3b8; grid-column: 1/-1;">Cargando últimas publicaciones...</p>
+      <p style="text-align: center; color: #666666; grid-column: 1/-1;">Cargando publicaciones principales...</p>
     </div>
   </main>
+
+  <footer>
+    © 2026 A Contraluz. Todos los derechos reservados.
+  </footer>
 
   <script>
     const REPO_OWNER = "nik09091312";
@@ -58,7 +66,7 @@
       try {
         const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/articulos?ref=principal`);
         if (!res.ok) {
-          container.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>No hay noticias publicadas.</p>";
+          container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #666;'>No hay noticias publicadas en este momento.</p>";
           return;
         }
 
@@ -73,7 +81,7 @@
 
         renderArticles(allArticles);
       } catch (e) {
-        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color:#fca5a5;'>Error leyendo publicaciones.</p>";
+        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #cc0000;'>Error consultando las publicaciones.</p>";
       }
     }
 
@@ -95,7 +103,7 @@
     function renderArticles(articles) {
       const container = document.getElementById('news-container');
       if (articles.length === 0) {
-        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color:#94a3b8;'>No hay noticias en esta sección.</p>";
+        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #666;'>No hay noticias en esta sección.</p>";
         return;
       }
 

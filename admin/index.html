@@ -3,35 +3,50 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel de Administración | El Oráculo</title>
+  <title>Panel Editorial | A Contraluz</title>
   <style>
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; margin: 0; padding: 20px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .card { background: #1e293b; border-radius: 12px; padding: 32px; width: 100%; max-width: 900px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-    h1, h2 { color: #38bdf8; margin-top: 0; }
+    * { box-sizing: border-box; }
+    body { background-color: #f4f4f4; color: #111111; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    
+    .brand-header { text-align: center; margin-bottom: 25px; }
+    .brand-header h1 { font-family: 'Times New Roman', serif; font-size: 2.2rem; font-weight: 900; margin: 0; letter-spacing: 2px; text-transform: uppercase; color: #000; }
+    .brand-header p { color: #cc0000; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; margin-top: 4px; letter-spacing: 1px; }
+
+    .card { background: #ffffff; border-top: 4px solid #cc0000; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 30px; width: 100%; max-width: 950px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    
+    h2 { font-family: 'Georgia', serif; color: #000000; margin-top: 0; border-bottom: 2px solid #111; padding-bottom: 6px; font-size: 1.3rem; }
+    
     .field { margin-bottom: 16px; }
-    label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: #cbd5e1; }
-    input, textarea, select { width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #fff; font-size: 0.95rem; }
-    input:focus, textarea:focus, select:focus { border-color: #38bdf8; outline: none; }
-    button { padding: 10px 18px; background: #0284c7; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-    button:hover { background: #0369a1; }
-    .btn-danger { background: #b91c1c; }
-    .btn-danger:hover { background: #991b1b; }
+    label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 6px; color: #333333; text-transform: uppercase; }
+    input, textarea, select { width: 100%; padding: 10px 12px; background: #ffffff; border: 1px solid #cccccc; border-radius: 2px; color: #111; font-size: 0.95rem; }
+    input:focus, textarea:focus, select:focus { border-color: #cc0000; outline: none; }
+    
+    button { padding: 12px 20px; background: #000000; color: #ffffff; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: background 0.2s; font-size: 0.85rem; letter-spacing: 1px; }
+    button:hover { background: #cc0000; }
+    .btn-danger { background: #cc0000; }
+    .btn-danger:hover { background: #990000; }
+    
     .hidden { display: none; }
-    .alert { padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 16px; text-align: center; }
-    .alert-error { background: #7f1d1d; color: #fca5a5; }
-    .alert-success { background: #14532d; color: #86efac; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .alert { padding: 12px; border-radius: 2px; font-size: 0.85rem; margin-bottom: 20px; text-align: center; font-weight: bold; }
+    .alert-error { background: #fde8e8; color: #990000; border: 1px solid #f8b4b4; }
+    .alert-success { background: #edf8f1; color: #0e6231; border: 1px solid #b6e5c8; }
+    
+    .grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; }
     @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
-    .article-item { background: #0f172a; padding: 12px; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #334155; }
+    
+    .article-item { background: #fafafa; padding: 12px 15px; border: 1px solid #e0e0e0; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN & CONFIGURACIÓN TOKEN -->
+  <div class="brand-header">
+    <h1>A CONTRALUZ</h1>
+    <p>Panel de Control Editorial</p>
+  </div>
+
+  <!-- FORMULARIO DE ACCESO -->
   <div id="login-card" class="card" style="max-width: 420px;">
-    <h1 style="text-align: center;">El Oráculo</h1>
-    <p style="color: #94a3b8; text-align: center; font-size: 0.9rem;">Acceso al Panel de Administración</p>
+    <h2>Ingreso Redacción</h2>
     <div id="login-error" class="alert alert-error hidden"></div>
     <form id="login-form">
       <div class="field">
@@ -39,60 +54,60 @@
         <input type="password" id="password" placeholder="••••••••" required />
       </div>
       <div class="field">
-        <label for="github-token">GitHub Personal Access Token</label>
+        <label for="github-token">GitHub Token</label>
         <input type="password" id="github-token" placeholder="ghp_..." required />
       </div>
-      <button type="submit" style="width: 100%;">Ingresar al panel</button>
+      <button type="submit" style="width: 100%;">Acceder al Editor</button>
     </form>
   </div>
 
-  <!-- PANEL PRINCIPAL (CREAR / ELIMINAR NOTICIAS) -->
+  <!-- PANEL DE GESTIÓN -->
   <div id="editor-card" class="card hidden">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-      <h1 style="margin: 0;">Panel de Gestión de Noticias</h1>
-      <button id="logout-btn" class="btn-danger">Cerrar sesión</button>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <span style="font-weight: bold; text-transform: uppercase; font-size: 0.9rem;">Estado: Sesión Activa</span>
+      <button id="logout-btn" class="btn-danger" style="padding: 6px 12px; font-size: 0.75rem;">Cerrar sesión</button>
     </div>
 
     <div id="editor-msg" class="alert hidden"></div>
 
     <div class="grid">
-      <!-- FORMULARIO DE PUBLICACIÓN -->
+      <!-- FORMULARIO DE REDACCIÓN -->
       <div>
-        <h2>Publicar Nueva Noticia</h2>
+        <h2>Redactar Noticia</h2>
         <form id="article-form">
           <div class="field">
-            <label for="category">Sección / Categoria</label>
+            <label for="category">Sección</label>
             <select id="category" required>
-              <option value="hoy">Hoy (Noticias del Día)</option>
+              <option value="hoy">Hoy</option>
               <option value="opinion">Opiniones</option>
               <option value="cultura">Cultura</option>
               <option value="deportes">Deportes</option>
             </select>
           </div>
           <div class="field">
-            <label for="title">Título de la noticia</label>
-            <input type="text" id="title" required placeholder="Escribe el título..." />
+            <label for="title">Título</label>
+            <input type="text" id="title" required placeholder="Titular de la noticia..." />
           </div>
           <div class="field">
             <label for="summary">Resumen / Copete</label>
-            <textarea id="summary" rows="2" required placeholder="Breve introducción..."></textarea>
+            <textarea id="summary" rows="2" required placeholder="Entradilla breve..."></textarea>
           </div>
           <div class="field">
-            <label for="image">URL de la imagen destacada</label>
+            <label for="image">URL de la imagen</label>
             <input type="url" id="image" placeholder="https://..." />
           </div>
           <div class="field">
             <label for="body">Cuerpo de la noticia</label>
-            <textarea id="body" rows="6" required placeholder="Contenido del artículo..."></textarea>
+            <textarea id="body" rows="7" required placeholder="Escribe el artículo aquí..."></textarea>
           </div>
-          <button type="submit" style="width: 100%;">Publicar e Historiar en GitHub</button>
+          <button type="submit" style="width: 100%;">Publicar Artículo</button>
         </form>
       </div>
 
-      <!-- MARCO DE GESTIÓN (LISTADO Y ELIMINACIÓN) -->
+      <!-- LISTADO Y ELIMINACIÓN -->
       <div>
-        <h2>Noticias Publicadas</h2>
-        <div id="articles-list">Cargando noticias desde GitHub...</div>
+        <h2>Histórico de Artículos</h2>
+        <div id="articles-list">Cargando publicaciones...</div>
       </div>
     </div>
   </div>
@@ -139,7 +154,6 @@
       loadPublishedArticles();
     }
 
-    // Publicar Noticia creando un archivo .md en el repositorio
     document.getElementById('article-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const token = localStorage.getItem('gh_token');
@@ -165,7 +179,7 @@ ${body}`;
 
       const msg = document.getElementById('editor-msg');
       msg.className = "alert alert-success";
-      msg.textContent = "Guardando noticia en GitHub...";
+      msg.textContent = "Enviando publicación al servidor...";
       msg.classList.remove('hidden');
 
       try {
@@ -183,19 +197,18 @@ ${body}`;
         });
 
         if (response.ok) {
-          msg.textContent = "¡Noticia publicada con éxito!";
+          msg.textContent = "¡Artículo publicado con éxito!";
           document.getElementById('article-form').reset();
           loadPublishedArticles();
         } else {
-          throw new Error('Error al publicar en GitHub');
+          throw new Error('Error de publicación');
         }
       } catch (err) {
         msg.className = "alert alert-error";
-        msg.textContent = "Error al guardar. Verifica el Token de GitHub.";
+        msg.textContent = "Error al guardar. Revisa tu Token de GitHub.";
       }
     });
 
-    // Cargar y listar noticias existentes para eliminar
     async function loadPublishedArticles() {
       const container = document.getElementById('articles-list');
       const token = localStorage.getItem('gh_token');
@@ -206,7 +219,7 @@ ${body}`;
         });
         
         if (!res.ok) {
-          container.innerHTML = "<p style='color:#94a3b8;'>No hay noticias creadas aún en la carpeta /articulos.</p>";
+          container.innerHTML = "<p style='color:#666; font-size:0.9rem;'>No hay noticias en el repositorio.</p>";
           return;
         }
 
@@ -217,19 +230,18 @@ ${body}`;
           const item = document.createElement('div');
           item.className = 'article-item';
           item.innerHTML = `
-            <span style="font-size:0.85rem; color:#f8fafc;">${file.name}</span>
-            <button class="btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="deleteArticle('${file.path}', '${file.sha}')">Eliminar</button>
+            <span style="font-size:0.85rem; font-weight:bold; color:#111;">${file.name}</span>
+            <button class="btn-danger" style="padding:4px 8px; font-size:0.7rem;" onclick="deleteArticle('${file.path}', '${file.sha}')">Eliminar</button>
           `;
           container.appendChild(item);
         });
       } catch (e) {
-        container.innerHTML = "<p style='color:#fca5a5;'>Error cargando el listado.</p>";
+        container.innerHTML = "<p style='color:#cc0000; font-size:0.9rem;'>Error cargando el listado.</p>";
       }
     }
 
-    // Eliminar noticia de GitHub
     async function deleteArticle(path, sha) {
-      if (!confirm("¿Seguro que deseas eliminar esta noticia?")) return;
+      if (!confirm("¿Deseas eliminar definitivamente este artículo del periódico?")) return;
       const token = localStorage.getItem('gh_token');
 
       const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, {
@@ -246,10 +258,9 @@ ${body}`;
       });
 
       if (res.ok) {
-        alert("Noticia eliminada correctamente.");
         loadPublishedArticles();
       } else {
-        alert("No se pudo eliminar la noticia.");
+        alert("No se pudo eliminar el artículo.");
       }
     }
   </script>
