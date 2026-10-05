@@ -4,158 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control Editorial - A CONTRALUZ</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Georgia', serif;
-        }
-
-        body {
-            background-color: #f4f4f4;
-            color: #111;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            padding: 20px 0;
-            border-bottom: 3px double #000;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .header p {
-            font-size: 0.9rem;
-            color: #a00;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            padding: 10px 20px;
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-
-        .btn-logout {
-            background: #a00;
-            color: #fff;
-            border: none;
-            padding: 6px 12px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .panel {
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #ccc;
-        }
-
-        .panel h2 {
-            font-size: 1.4rem;
-            border-bottom: 2px solid #000;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .form-group input, 
-        .form-group select, 
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: #000;
-            color: #fff;
-            padding: 12px;
-            border: none;
-            font-size: 1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            letter-spacing: 1px;
-        }
-
-        .btn-submit:hover {
-            background: #333;
-        }
-
-        .article-item {
-            background: #fafafa;
-            border: 1px solid #e0e0e0;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .article-item h3 {
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-
-        .article-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .btn-action {
-            padding: 5px 10px;
-            border: none;
-            color: #fff;
-            font-size: 0.75rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        .btn-ver { background: #555; }
-        .btn-editar { background: #000; }
-        .btn-eliminar { background: #c00; }
-
         /* Estilos del Modal de Vista Previa */
         .modal-overlay {
             position: fixed;
@@ -183,7 +33,7 @@
         }
 
         /* Botón de Cierre (X) */
-        .modal-close-btn {
+        .close-btn {
             position: absolute;
             top: 10px;
             right: 15px;
@@ -194,51 +44,12 @@
             color: #333;
             cursor: pointer;
             line-height: 1;
-            padding: 5px 10px;
-            transition: color 0.2s;
+            padding: 5px;
+            transition: color 0.2s ease;
         }
 
-        .modal-close-btn:hover {
+        .close-btn:hover {
             color: #c00;
-        }
-
-        .preview-section {
-            font-size: 0.8rem;
-            color: #c00;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .preview-title {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 8px;
-        }
-
-        .preview-date {
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .preview-summary {
-            font-size: 1rem;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .preview-body {
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -250,8 +61,8 @@
     </header>
 
     <div class="status-bar">
-        <span>ESTADO: SESIÓ N ACTIVA</span>
-        <button class="btn-logout" onclick="cerrarSesion()">CERRAR SESIÓN</button>
+        <span>ESTADO: SESIÓN ACTIVA</span>
+        <button class="btn-logout" id="logout-btn">CERRAR SESIÓN</button>
     </div>
 
     <div class="container">
@@ -261,12 +72,12 @@
             <form id="news-form">
                 <div class="form-group">
                     <label for="fecha">FECHA DE PUBLICACIÓN</label>
-                    <input type="date" id="fecha" required>
+                    <input type="date" id="fecha" name="fecha" required>
                 </div>
 
                 <div class="form-group">
                     <label for="seccion">SECCIÓN</label>
-                    <select id="seccion" required>
+                    <select id="seccion" name="seccion" required>
                         <option value="Hoy">Hoy</option>
                         <option value="Opinión">Opinión</option>
                         <option value="Investigación">Investigación</option>
@@ -276,22 +87,22 @@
 
                 <div class="form-group">
                     <label for="titulo">TÍTULO</label>
-                    <input type="text" id="titulo" placeholder="Titular de la noticia..." required>
+                    <input type="text" id="titulo" name="titulo" placeholder="Titular de la noticia..." required>
                 </div>
 
                 <div class="form-group">
                     <label for="resumen">RESUMEN / ENTRADILLA</label>
-                    <input type="text" id="resumen" placeholder="Entradilla breve..." required>
+                    <input type="text" id="resumen" name="resumen" placeholder="Entradilla breve..." required>
                 </div>
 
                 <div class="form-group">
                     <label for="imagen">URL DE LA IMAGEN</label>
-                    <input type="url" id="imagen" placeholder="https://...">
+                    <input type="url" id="imagen" name="imagen" placeholder="https://...">
                 </div>
 
                 <div class="form-group">
                     <label for="cuerpo">CUERPO DE LA NOTICIA</label>
-                    <textarea id="cuerpo" rows="8" placeholder="Escribe el artículo aquí..." required></textarea>
+                    <textarea id="cuerpo" name="cuerpo" rows="8" placeholder="Escribe el artículo aquí..." required></textarea>
                 </div>
 
                 <button type="submit" class="btn-submit">PUBLICAR ARTÍCULO</button>
@@ -302,15 +113,7 @@
         <section class="panel">
             <h2>Histórico de Artículos</h2>
             <div id="articles-list">
-                <!-- Ejemplo estático o cargado por JS -->
-                <div class="article-item">
-                    <h3>hola.md</h3>
-                    <div class="article-actions">
-                        <button class="btn-action btn-ver" onclick="verArticulo('hola.md', 'OPINION', 'hola', '2026-10-05T04:26:56.760Z', 'entrada', 'hola dos veces')">VER</button>
-                        <button class="btn-action btn-editar">EDITAR</button>
-                        <button class="btn-action btn-eliminar">ELIMINAR</button>
-                    </div>
-                </div>
+                <!-- Se puebla dinámicamente mediante JS -->
             </div>
         </section>
     </div>
@@ -318,59 +121,30 @@
     <!-- Modal de Vista Previa -->
     <div id="preview-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
-            <!-- Botón X para salir -->
-            <button class="modal-close-btn" onclick="cerrarVistaPrevia()">&times;</button>
-            
+            <button type="button" class="close-btn" id="modal-close-btn">&times;</button>
             <div id="modal-body">
-                <div class="preview-section" id="modal-seccion">OPINIÓN</div>
-                <h2 class="preview-title" id="modal-titulo">Título del Artículo</h2>
-                <div class="preview-date" id="modal-fecha">Fecha: 05/10/2026</div>
-                <div class="preview-summary" id="modal-resumen"><strong>Resumen:</strong> Entradilla de ejemplo...</div>
-                <div class="preview-body" id="modal-cuerpo">Cuerpo del artículo...</div>
+                <!-- Contenido de vista previa llenado dinámicamente por script.js -->
             </div>
         </div>
     </div>
 
+    <script src="script.js"></script>
     <script>
-        // Función para formatear fechas largas a formato DD/MM/AAAA
-        function formatearFecha(fechaStr) {
-            if (!fechaStr) return '';
-            const fecha = new Date(fechaStr);
-            if (isNaN(fecha.getTime())) return fechaStr; // Devuelve original si no es válida
-            const dia = String(fecha.getDate()).padStart(2, '0');
-            const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-            const anio = fecha.getFullYear();
-            return `${dia}/${mes}/${anio}`;
+        // Lógica para cerrar el modal de vista previa de forma segura
+        const modal = document.getElementById('preview-modal');
+        const closeBtn = document.getElementById('modal-close-btn');
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
         }
 
-        // Función para mostrar el modal de vista previa
-        function verArticulo(filename, seccion, titulo, fecha, resumen, cuerpo) {
-            document.getElementById('modal-seccion').innerText = seccion || 'NOTICIA';
-            document.getElementById('modal-titulo').innerText = titulo || filename;
-            document.getElementById('modal-fecha').innerText = 'Fecha: ' + formatearFecha(fecha);
-            document.getElementById('modal-resumen').innerHTML = '<strong>Resumen:</strong> ' + (resumen || '');
-            document.getElementById('modal-cuerpo').innerText = cuerpo || '';
-
-            document.getElementById('preview-modal').style.display = 'flex';
-        }
-
-        // Función para cerrar la vista previa
-        function cerrarVistaPrevia() {
-            document.getElementById('preview-modal').style.display = 'none';
-        }
-
-        // Cerrar al hacer clic en el fondo oscuro
         window.addEventListener('click', function(event) {
-            const modal = document.getElementById('preview-modal');
             if (event.target === modal) {
-                cerrarVistaPrevia();
+                modal.style.display = 'none';
             }
         });
-
-        function cerrarSesion() {
-            alert('Sesión cerrada');
-            // Redirección o lógica de cierre de sesión
-        }
     </script>
 </body>
 </html>
