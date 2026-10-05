@@ -6,52 +6,7 @@
   <title>Panel de Administración | El Oráculo</title>
 </head>
 <body>
-  <script>
-    window.CMS_MANUAL_INIT = true;
-  </script>
+  <!-- Carga limpia de Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    window.onload = function() {
-      // Anular el comportamiento por defecto de Netlify Authenticator
-      CMS.registerBackend('github-pat', {
-        init: function() {},
-        authenticate: function() {
-          var token = prompt("Ingresa tu Personal Access Token de GitHub:");
-          if (!token) return Promise.reject("Token requerido");
-          return Promise.resolve({ token: token });
-        }
-      });
-
-      CMS.init({
-        config: {
-          load_config_file: false,
-          backend: {
-            name: 'github',
-            repo: 'nik09091312/el-oraculo',
-            branch: 'principal',
-            auth_type: 'implicit'
-          },
-          media_folder: 'images',
-          public_folder: '/images',
-          collections: [
-            {
-              name: 'articulos',
-              label: 'Artículos',
-              folder: 'articulos',
-              create: true,
-              slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
-              fields: [
-                { label: 'Título', name: 'title', widget: 'string' },
-                { label: 'Fecha de publicación', name: 'date', widget: 'datetime' },
-                { label: 'Imagen destacada', name: 'image', widget: 'image', required: false },
-                { label: 'Resumen / Copete', name: 'summary', widget: 'text' },
-                { label: 'Cuerpo del artículo', name: 'body', widget: 'markdown' }
-              ]
-            }
-          ]
-        }
-      });
-    };
-  </script>
 </body>
 </html>
