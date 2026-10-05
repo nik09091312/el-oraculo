@@ -1,33 +1,129 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Contraluz - Periódico Digital</title>
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Contraluz / El Oráculo</title>
+  <style>
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; margin: 0; padding: 0; }
+    header { background: #1e293b; padding: 24px; text-align: center; border-bottom: 2px solid #0284c7; }
+    h1 { margin: 0; font-size: 2.2rem; color: #38bdf8; letter-spacing: 2px; }
+    p.tagline { color: #94a3b8; font-style: italic; margin-top: 6px; }
+    
+    /* Navegación Interactiva */
+    nav { background: #0f172a; display: flex; justify-content: center; gap: 15px; padding: 12px; border-bottom: 1px solid #334155; }
+    nav button { background: transparent; color: #94a3b8; border: 1px solid #334155; padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: 0.2s; }
+    nav button.active, nav button:hover { background: #0284c7; color: #fff; border-color: #0284c7; }
+
+    main { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .card { background: #1e293b; border-radius: 8px; overflow: hidden; border: 1px solid #334155; display: flex; flex-direction: column; }
+    .card img { width: 100%; height: 180px; object-fit: cover; }
+    .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .category-tag { font-size: 0.75rem; text-transform: uppercase; color: #38bdf8; font-weight: bold; margin-bottom: 8px; }
+    .card-title { font-size: 1.2rem; margin: 0 0 10px 0; color: #fff; }
+    .card-summary { font-size: 0.9rem; color: #cbd5e1; flex: 1; }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-container">
-            <h1>A CONTRALUZ</h1>
-            <p class="tagline">Periodismo independiente, historias sin filtro</p>
-        </div>
-    </header>
+  <header>
+    <h1>A CONTRALUZ</h1>
+    <p class="tagline">Periodismo independiente, historias sin filtro</p>
+  </header>
 
-    <main class="main-content">
-        <section class="articles-container" id="articles-list">
-            <!-- Los artículos publicados se cargarán dinámicamente -->
-            <article class="featured-article">
-                <h2>Cargando noticias principales...</h2>
-                <p>Las últimas publicaciones aparecerán en este espacio.</p>
-            </article>
-        </section>
-    </main>
+  <!-- SECCIONES INTERACTIVAS -->
+  <nav>
+    <button class="active" onclick="filterCategory('todas', this)">Todas</button>
+    <button onclick="filterCategory('hoy', this)">Hoy</button>
+    <button onclick="filterCategory('opinion', this)">Opiniones</button>
+    <button onclick="filterCategory('cultura', this)">Cultura</button>
+    <button onclick="filterCategory('deportes', this)">Deportes</button>
+  </nav>
 
-    <footer>
-        <p>&copy; 2026 A Contraluz. Todos los derechos reservados.</p>
-    </footer>
+  <main>
+    <div id="news-container" class="news-grid">
+      <p style="text-align: center; color: #94a3b8; grid-column: 1/-1;">Cargando últimas publicaciones...</p>
+    </div>
+  </main>
 
+  <script>
+    const REPO_OWNER = "nik09091312";
+    const REPO_NAME = "el-oraculo";
+    let allArticles = [];
+
+    async function loadArticles() {
+      const container = document.getElementById('news-container');
+      try {
+        const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/articulos?ref=principal`);
+        if (!res.ok) {
+          container.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>No hay noticias publicadas.</p>";
+          return;
+        }
+
+        const files = await res.json();
+        const mdFiles = files.filter(f => f.name.endsWith('.md'));
+
+        allArticles = await Promise.all(mdFiles.map(async file => {
+          const rawRes = await fetch(file.download_url);
+          const text = await rawRes.text();
+          return parseMarkdown(text);
+        }));
+
+        renderArticles(allArticles);
+      } catch (e) {
+        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color:#fca5a5;'>Error leyendo publicaciones.</p>";
+      }
+    }
+
+    function parseMarkdown(md) {
+      const match = md.match(/---([\s\S]*?)---([\s\S]*)/);
+      if (!match) return { title: 'Sin título', summary: md, category: 'hoy', image: '' };
+      
+      const metaText = match[1];
+      const body = match[2];
+      
+      const title = (metaText.match(/title:\s*"(.*?)"/) || [])[1] || 'Sin título';
+      const category = (metaText.match(/category:\s*"(.*?)"/) || [])[1] || 'hoy';
+      const summary = (metaText.match(/summary:\s*"(.*?)"/) || [])[1] || '';
+      const image = (metaText.match(/image:\s*"(.*?)"/) || [])[1] || '';
+
+      return { title, category, summary, image, body };
+    }
+
+    function renderArticles(articles) {
+      const container = document.getElementById('news-container');
+      if (articles.length === 0) {
+        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color:#94a3b8;'>No hay noticias en esta sección.</p>";
+        return;
+      }
+
+      container.innerHTML = articles.map(art => `
+        <article class="card">
+          ${art.image ? `<img src="${art.image}" alt="${art.title}">` : ''}
+          <div class="card-body">
+            <span class="category-tag">${art.category}</span>
+            <h2 class="card-title">${art.title}</h2>
+            <p class="card-summary">${art.summary}</p>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function filterCategory(cat, btn) {
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (cat === 'todas') {
+        renderArticles(allArticles);
+      } else {
+        const filtered = allArticles.filter(a => a.category === cat);
+        renderArticles(filtered);
+      }
+    }
+
+    loadArticles();
+  </script>
 </body>
 </html>

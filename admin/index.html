@@ -6,73 +6,100 @@
   <title>Panel de Administración | El Oráculo</title>
   <style>
     * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
-    .card { background: #1e293b; border-radius: 12px; padding: 32px; width: 100%; max-width: 420px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-    h1 { font-size: 1.5rem; margin-top: 0; color: #38bdf8; text-align: center; }
-    p.sub { font-size: 0.9rem; color: #94a3b8; text-align: center; margin-bottom: 24px; }
+    body { background-color: #0f172a; color: #f8fafc; margin: 0; padding: 20px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .card { background: #1e293b; border-radius: 12px; padding: 32px; width: 100%; max-width: 900px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    h1, h2 { color: #38bdf8; margin-top: 0; }
     .field { margin-bottom: 16px; }
     label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: #cbd5e1; }
-    input, textarea { width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #fff; font-size: 0.95rem; }
-    input:focus, textarea:focus { border-color: #38bdf8; outline: none; }
-    button { width: 100%; padding: 12px; background: #0284c7; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
+    input, textarea, select { width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #fff; font-size: 0.95rem; }
+    input:focus, textarea:focus, select:focus { border-color: #38bdf8; outline: none; }
+    button { padding: 10px 18px; background: #0284c7; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     button:hover { background: #0369a1; }
+    .btn-danger { background: #b91c1c; }
+    .btn-danger:hover { background: #991b1b; }
     .hidden { display: none; }
-    .article-form { max-width: 700px; }
     .alert { padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 16px; text-align: center; }
     .alert-error { background: #7f1d1d; color: #fca5a5; }
     .alert-success { background: #14532d; color: #86efac; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    .article-item { background: #0f172a; padding: 12px; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #334155; }
   </style>
 </head>
 <body>
 
-  <!-- FORMULARIO DE ACCESO -->
-  <div id="login-card" class="card">
-    <h1>El Oráculo</h1>
-    <p class="sub">Acceso al Panel de Administración</p>
+  <!-- LOGIN & CONFIGURACIÓN TOKEN -->
+  <div id="login-card" class="card" style="max-width: 420px;">
+    <h1 style="text-align: center;">El Oráculo</h1>
+    <p style="color: #94a3b8; text-align: center; font-size: 0.9rem;">Acceso al Panel de Administración</p>
     <div id="login-error" class="alert alert-error hidden"></div>
     <form id="login-form">
-      <div class="field">
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" value="periodismoeloraculo@gmail.com" required />
-      </div>
       <div class="field">
         <label for="password">Contraseña</label>
         <input type="password" id="password" placeholder="••••••••" required />
       </div>
-      <button type="submit">Ingresar al panel</button>
+      <div class="field">
+        <label for="github-token">GitHub Personal Access Token</label>
+        <input type="password" id="github-token" placeholder="ghp_..." required />
+      </div>
+      <button type="submit" style="width: 100%;">Ingresar al panel</button>
     </form>
   </div>
 
-  <!-- EDITOR DE ARTÍCULOS -->
-  <div id="editor-card" class="card article-form hidden">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-      <h1 style="margin: 0;">Crear Artículo</h1>
-      <button id="logout-btn" style="width: auto; padding: 6px 12px; background: #475569; margin: 0;">Cerrar sesión</button>
+  <!-- PANEL PRINCIPAL (CREAR / ELIMINAR NOTICIAS) -->
+  <div id="editor-card" class="card hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <h1 style="margin: 0;">Panel de Gestión de Noticias</h1>
+      <button id="logout-btn" class="btn-danger">Cerrar sesión</button>
     </div>
+
     <div id="editor-msg" class="alert hidden"></div>
-    <form id="article-form">
-      <div class="field">
-        <label for="title">Título del artículo</label>
-        <input type="text" id="title" required placeholder="Escribe el título aquí..." />
+
+    <div class="grid">
+      <!-- FORMULARIO DE PUBLICACIÓN -->
+      <div>
+        <h2>Publicar Nueva Noticia</h2>
+        <form id="article-form">
+          <div class="field">
+            <label for="category">Sección / Categoria</label>
+            <select id="category" required>
+              <option value="hoy">Hoy (Noticias del Día)</option>
+              <option value="opinion">Opiniones</option>
+              <option value="cultura">Cultura</option>
+              <option value="deportes">Deportes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="title">Título de la noticia</label>
+            <input type="text" id="title" required placeholder="Escribe el título..." />
+          </div>
+          <div class="field">
+            <label for="summary">Resumen / Copete</label>
+            <textarea id="summary" rows="2" required placeholder="Breve introducción..."></textarea>
+          </div>
+          <div class="field">
+            <label for="image">URL de la imagen destacada</label>
+            <input type="url" id="image" placeholder="https://..." />
+          </div>
+          <div class="field">
+            <label for="body">Cuerpo de la noticia</label>
+            <textarea id="body" rows="6" required placeholder="Contenido del artículo..."></textarea>
+          </div>
+          <button type="submit" style="width: 100%;">Publicar e Historiar en GitHub</button>
+        </form>
       </div>
-      <div class="field">
-        <label for="summary">Resumen / Copete</label>
-        <textarea id="summary" rows="2" required placeholder="Breve introducción de la noticia..."></textarea>
+
+      <!-- MARCO DE GESTIÓN (LISTADO Y ELIMINACIÓN) -->
+      <div>
+        <h2>Noticias Publicadas</h2>
+        <div id="articles-list">Cargando noticias desde GitHub...</div>
       </div>
-      <div class="field">
-        <label for="image">URL de la imagen destacada</label>
-        <input type="url" id="image" placeholder="https://ejemplo.com/imagen.jpg" />
-      </div>
-      <div class="field">
-        <label for="body">Cuerpo de la noticia</label>
-        <textarea id="body" rows="8" required placeholder="Escribe el contenido del artículo..."></textarea>
-      </div>
-      <button type="submit">Publicar Noticia</button>
-    </form>
+    </div>
   </div>
 
   <script>
-    // CONTRASEÑA AUTORIZADA
+    const REPO_OWNER = "nik09091312";
+    const REPO_NAME = "el-oraculo";
     const CLAVE_CORRECTA = "Oraculo2026*";
 
     const loginCard = document.getElementById('login-card');
@@ -81,26 +108,27 @@
     const loginError = document.getElementById('login-error');
     const logoutBtn = document.getElementById('logout-btn');
 
-    if (localStorage.getItem('oraculo_logged_in') === 'true') {
+    if (localStorage.getItem('oraculo_logged') === 'true') {
       showEditor();
     }
 
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const pass = document.getElementById('password').value.trim();
+      const token = document.getElementById('github-token').value.trim();
 
       if (pass === CLAVE_CORRECTA) {
-        localStorage.setItem('oraculo_logged_in', 'true');
-        loginError.classList.add('hidden');
+        localStorage.setItem('oraculo_logged', 'true');
+        localStorage.setItem('gh_token', token);
         showEditor();
       } else {
-        loginError.textContent = "Contraseña incorrecta. Recuerda incluir el asterisco (*).";
+        loginError.textContent = "Contraseña incorrecta.";
         loginError.classList.remove('hidden');
       }
     });
 
     logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('oraculo_logged_in');
+      localStorage.clear();
       editorCard.classList.add('hidden');
       loginCard.classList.remove('hidden');
     });
@@ -108,18 +136,122 @@
     function showEditor() {
       loginCard.classList.add('hidden');
       editorCard.classList.remove('hidden');
+      loadPublishedArticles();
     }
 
+    // Publicar Noticia creando un archivo .md en el repositorio
     document.getElementById('article-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const token = localStorage.getItem('gh_token');
+      const title = document.getElementById('title').value;
+      const category = document.getElementById('category').value;
+      const summary = document.getElementById('summary').value;
+      const image = document.getElementById('image').value;
+      const body = document.getElementById('body').value;
+      const date = new Date().toISOString();
+
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const filename = `articulos/${slug}.md`;
+
+      const content = `---
+title: "${title}"
+date: "${date}"
+category: "${category}"
+summary: "${summary}"
+image: "${image}"
+---
+
+${body}`;
+
       const msg = document.getElementById('editor-msg');
       msg.className = "alert alert-success";
-      msg.textContent = "¡Noticia lista y publicada correctamente!";
+      msg.textContent = "Guardando noticia en GitHub...";
       msg.classList.remove('hidden');
 
-      document.getElementById('article-form').reset();
-      setTimeout(() => msg.classList.add('hidden'), 4000);
+      try {
+        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Agregar noticia: ${title}`,
+            content: btoa(unescape(encodeURIComponent(content))),
+            branch: 'principal'
+          })
+        });
+
+        if (response.ok) {
+          msg.textContent = "¡Noticia publicada con éxito!";
+          document.getElementById('article-form').reset();
+          loadPublishedArticles();
+        } else {
+          throw new Error('Error al publicar en GitHub');
+        }
+      } catch (err) {
+        msg.className = "alert alert-error";
+        msg.textContent = "Error al guardar. Verifica el Token de GitHub.";
+      }
     });
+
+    // Cargar y listar noticias existentes para eliminar
+    async function loadPublishedArticles() {
+      const container = document.getElementById('articles-list');
+      const token = localStorage.getItem('gh_token');
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/articulos?ref=principal`, {
+          headers: { 'Authorization': `token ${token}` }
+        });
+        
+        if (!res.ok) {
+          container.innerHTML = "<p style='color:#94a3b8;'>No hay noticias creadas aún en la carpeta /articulos.</p>";
+          return;
+        }
+
+        const files = await res.json();
+        container.innerHTML = "";
+
+        files.filter(f => f.name.endsWith('.md')).forEach(file => {
+          const item = document.createElement('div');
+          item.className = 'article-item';
+          item.innerHTML = `
+            <span style="font-size:0.85rem; color:#f8fafc;">${file.name}</span>
+            <button class="btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="deleteArticle('${file.path}', '${file.sha}')">Eliminar</button>
+          `;
+          container.appendChild(item);
+        });
+      } catch (e) {
+        container.innerHTML = "<p style='color:#fca5a5;'>Error cargando el listado.</p>";
+      }
+    }
+
+    // Eliminar noticia de GitHub
+    async function deleteArticle(path, sha) {
+      if (!confirm("¿Seguro que deseas eliminar esta noticia?")) return;
+      const token = localStorage.getItem('gh_token');
+
+      const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `Eliminar noticia ${path}`,
+          sha: sha,
+          branch: 'principal'
+        })
+      });
+
+      if (res.ok) {
+        alert("Noticia eliminada correctamente.");
+        loadPublishedArticles();
+      } else {
+        alert("No se pudo eliminar la noticia.");
+      }
+    }
   </script>
 </body>
 </html>
