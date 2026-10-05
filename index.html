@@ -1,55 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A Contraluz | Periodismo Independiente</title>
   <style>
     * { box-sizing: border-box; }
-    body { background-color: #fcfcfc; color: #111111; font-family: 'Georgia', 'Times New Roman', serif; margin: 0; padding: 0; line-height: 1.6; }
-    
-    header { background: #ffffff; padding: 40px 20px 20px; text-align: center; border-bottom: 4px solid #cc0000; }
-    h1.brand-title { font-size: 3rem; font-weight: 900; margin: 0; letter-spacing: 3px; font-family: 'Times New Roman', serif; text-transform: uppercase; color: #000000; }
-    p.tagline { color: #555555; font-style: italic; margin-top: 8px; font-size: 1.05rem; }
-    
-    /* Navegación por secciones */
-    nav { background: #ffffff; display: flex; justify-content: center; gap: 10px; padding: 12px 20px; border-bottom: 1px solid #dddddd; flex-wrap: wrap; }
-    nav button { background: transparent; color: #333333; border: 1px solid #cccccc; padding: 6px 16px; font-family: system-ui, sans-serif; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-    nav button.active, nav button:hover { background: #cc0000; color: #ffffff; border-color: #cc0000; }
-
-    main { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
-    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
-    
-    .card { background: #ffffff; border: 1px solid #e0e0e0; display: flex; flex-direction: column; overflow: hidden; transition: transform 0.2s; }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
-    .card img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #eee; }
-    .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
-    .category-tag { font-family: system-ui, sans-serif; font-size: 0.75rem; text-transform: uppercase; color: #cc0000; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
-    .card-title { font-size: 1.4rem; margin: 0 0 10px 0; color: #000000; line-height: 1.25; }
-    .card-summary { font-size: 0.95rem; color: #444444; flex: 1; margin: 0; }
-
-    footer { text-align: center; padding: 30px; border-top: 1px solid #dddddd; color: #777777; font-family: system-ui, sans-serif; font-size: 0.85rem; margin-top: 60px; }
+    body { background-color: #ffffff; color: #111111; font-family: Georgia, serif; margin: 0; padding: 0; }
+    header { text-align: center; padding: 40px 20px 20px 20px; border-bottom: 3px double #111; }
+    header h1 { font-size: 3rem; font-weight: 900; letter-spacing: 2px; margin: 0; text-transform: uppercase; }
+    header p { font-style: italic; color: #555; margin-top: 5px; font-size: 1.1rem; }
+    nav { display: flex; justify-content: center; gap: 10px; margin: 20px 0; border-bottom: 1px solid #ccc; padding-bottom: 15px; }
+    nav button { background: none; border: 1px solid #ccc; padding: 8px 16px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+    nav button.active { background: #cc0000; color: #fff; border-color: #cc0000; }
+    main { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+    .news-card { border-bottom: 1px solid #eee; padding-bottom: 20px; }
+    .news-card img { width: 100%; height: 200px; object-fit: cover; background: #eee; margin-bottom: 10px; }
+    .category-tag { color: #cc0000; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; font-family: system-ui; }
+    .news-card h2 { font-size: 1.4rem; margin: 8px 0; line-height: 1.2; }
+    .news-card p { font-size: 0.95rem; color: #444; line-height: 1.5; }
+    .news-card .date { font-size: 0.75rem; color: #888; font-family: system-ui; }
+    footer { text-align: center; padding: 30px; border-top: 1px solid #eee; color: #777; font-size: 0.85rem; font-family: system-ui; margin-top: 40px; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1 class="brand-title">A CONTRALUZ</h1>
-    <p class="tagline">Periodismo independiente, historias sin filtro</p>
+    <h1>A CONTRALUZ</h1>
+    <p>Periodismo independiente, historias sin filtro</p>
   </header>
 
-  <nav>
-    <button class="active" onclick="filterCategory('todas', this)">Todas</button>
-    <button onclick="filterCategory('hoy', this)">Hoy</button>
-    <button onclick="filterCategory('opinion', this)">Opiniones</button>
-    <button onclick="filterCategory('cultura', this)">Cultura</button>
-    <button onclick="filterCategory('deportes', this)">Deportes</button>
+  <nav id="categories">
+    <button class="active" data-cat="todas">Todas</button>
+    <button data-cat="hoy">Hoy</button>
+    <button data-cat="opinion">Opiniones</button>
+    <button data-cat="cultura">Cultura</button>
+    <button data-cat="deportes">Deportes</button>
   </nav>
 
   <main>
-    <div id="news-container" class="news-grid">
-      <p style="text-align: center; color: #666666; grid-column: 1/-1;">Cargando publicaciones principales...</p>
-    </div>
+    <div id="news-container" class="news-grid">Cargando noticias...</div>
   </main>
 
   <footer>
@@ -59,79 +50,93 @@
   <script>
     const REPO_OWNER = "nik09091312";
     const REPO_NAME = "el-oraculo";
+    const DEFAULT_BRANCH = "main";
+
     let allArticles = [];
 
-    async function loadArticles() {
+    async function fetchArticles() {
       const container = document.getElementById('news-container');
       try {
-        const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/articulos?ref=principal`);
+        const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/articulos?ref=${DEFAULT_BRANCH}`);
         if (!res.ok) {
-          container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #666;'>No hay noticias publicadas en este momento.</p>";
+          container.innerHTML = "<p style='text-align:center; width:100%;'>No hay noticias en esta sección.</p>";
           return;
         }
 
         const files = await res.json();
         const mdFiles = files.filter(f => f.name.endsWith('.md'));
 
+        if (mdFiles.length === 0) {
+          container.innerHTML = "<p style='text-align:center; width:100%;'>No hay noticias en esta sección.</p>";
+          return;
+        }
+
         allArticles = await Promise.all(mdFiles.map(async file => {
-          const rawRes = await fetch(file.download_url);
-          const text = await rawRes.text();
-          return parseMarkdown(text);
+          const fileRes = await fetch(file.download_url);
+          const rawText = await fileRes.text();
+          return parseMarkdown(rawText);
         }));
 
-        renderArticles(allArticles);
+        renderArticles('todas');
       } catch (e) {
-        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #cc0000;'>Error consultando las publicaciones.</p>";
+        container.innerHTML = "<p style='text-align:center; width:100%;'>Error al cargar las noticias.</p>";
       }
     }
 
-    function parseMarkdown(md) {
-      const match = md.match(/---([\s\S]*?)---([\s\S]*)/);
-      if (!match) return { title: 'Sin título', summary: md, category: 'hoy', image: '' };
-      
-      const metaText = match[1];
-      const body = match[2];
-      
-      const title = (metaText.match(/title:\s*"(.*?)"/) || [])[1] || 'Sin título';
-      const category = (metaText.match(/category:\s*"(.*?)"/) || [])[1] || 'hoy';
-      const summary = (metaText.match(/summary:\s*"(.*?)"/) || [])[1] || '';
-      const image = (metaText.match(/image:\s*"(.*?)"/) || [])[1] || '';
+    function parseMarkdown(text) {
+      const frontMatterMatch = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+      if (!frontMatterMatch) return { title: 'Sin título', body: text };
 
-      return { title, category, summary, image, body };
+      const yaml = frontMatterMatch[1];
+      const body = frontMatterMatch[2];
+      const metadata = {};
+
+      yaml.split('\n').forEach(line => {
+        const [key, ...value] = line.split(':');
+        if (key && value) {
+          metadata[key.trim()] = value.join(':').trim().replace(/^"|"$/g, '');
+        }
+      });
+
+      return { ...metadata, body };
     }
 
-    function renderArticles(articles) {
+    function renderArticles(filterCategory) {
       const container = document.getElementById('news-container');
-      if (articles.length === 0) {
-        container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #666;'>No hay noticias en esta sección.</p>";
+      container.innerHTML = '';
+
+      const filtered = filterCategory === 'todas' 
+        ? allArticles 
+        : allArticles.filter(a => (a.category || '').toLowerCase() === filterCategory.toLowerCase());
+
+      if (filtered.length === 0) {
+        container.innerHTML = "<p style='text-align:center; grid-column: 1 / -1;'>No hay noticias en esta sección.</p>";
         return;
       }
 
-      container.innerHTML = articles.map(art => `
-        <article class="card">
+      filtered.forEach(art => {
+        const card = document.createElement('article');
+        card.className = 'news-card';
+        card.innerHTML = `
           ${art.image ? `<img src="${art.image}" alt="${art.title}">` : ''}
-          <div class="card-body">
-            <span class="category-tag">${art.category}</span>
-            <h2 class="card-title">${art.title}</h2>
-            <p class="card-summary">${art.summary}</p>
-          </div>
-        </article>
-      `).join('');
+          <span class="category-tag">${art.category || 'Noticia'}</span>
+          <h2>${art.title || 'Sin Título'}</h2>
+          <p>${art.summary || art.body.substring(0, 120) + '...'}</p>
+          <span class="date">${art.date ? new Date(art.date).toLocaleDateString() : ''}</span>
+        `;
+        container.appendChild(card);
+      });
     }
 
-    function filterCategory(cat, btn) {
-      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+    document.querySelectorAll('#categories button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('#categories button').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        renderArticles(e.target.getAttribute('data-cat'));
+      });
+    });
 
-      if (cat === 'todas') {
-        renderArticles(allArticles);
-      } else {
-        const filtered = allArticles.filter(a => a.category === cat);
-        renderArticles(filtered);
-      }
-    }
-
-    loadArticles();
+    fetchArticles();
   </script>
 </body>
 </html>
