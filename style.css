@@ -35,11 +35,34 @@ header {
     padding: 0 1rem;
 }
 
-.featured-article {
+/* EFECTO BLANCO Y NEGRO EN PUBLICACIONES (HOVER A COLOR) */
+.featured-article,
+.article-card,
+.news-item,
+.noticia {
     background: #fff;
     padding: 2rem;
     border-radius: 6px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    filter: grayscale(100%);
+    transition: filter 0.4s ease, transform 0.3s ease;
+}
+
+/* Al pasar el cursor por encima, la noticia vuelve a full color */
+.featured-article:hover,
+.article-card:hover,
+.news-item:hover,
+.noticia:hover {
+    filter: grayscale(0%);
+}
+
+.featured-article img,
+.article-card img,
+.news-item img,
+.noticia img {
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
 
 .featured-article h2 {
