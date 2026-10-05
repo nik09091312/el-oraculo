@@ -2,8 +2,7 @@ backend:
   name: github
   repo: nik09091312/el-oraculo
   branch: principal
-  base_url: https://decap-gateway.squeezer.io
-  auth_endpoint: /auth
+  auth_type: implicit
 
 media_folder: "images"
 public_folder: "/images"
