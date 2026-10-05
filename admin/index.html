@@ -12,6 +12,16 @@
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script>
     window.onload = function() {
+      // Anular el comportamiento por defecto de Netlify Authenticator
+      CMS.registerBackend('github-pat', {
+        init: function() {},
+        authenticate: function() {
+          var token = prompt("Ingresa tu Personal Access Token de GitHub:");
+          if (!token) return Promise.reject("Token requerido");
+          return Promise.resolve({ token: token });
+        }
+      });
+
       CMS.init({
         config: {
           load_config_file: false,
