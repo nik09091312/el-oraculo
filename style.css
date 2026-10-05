@@ -1,81 +1,112 @@
 /* Estilos principales para A Contraluz */
-body {
-    font-family: 'Georgia', serif;
-    background-color: #f8f9fa;
-    color: #212529;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background-color: #f4f4f4;
+    color: #111;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 header {
-    background-color: #111;
-    color: #fff;
-    padding: 2.5rem 1rem;
+    background-color: #fff;
+    color: #111;
+    padding: 20px 0;
     text-align: center;
-    border-bottom: 4px solid #c92a2a;
+    border-bottom: 3px double #000;
+    margin-bottom: 20px;
 }
 
-.header-container h1 {
-    font-size: 2.8rem;
-    margin: 0;
-    letter-spacing: 3px;
+header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.tagline {
-    font-size: 1.1rem;
-    color: #adb5bd;
-    font-style: italic;
-    margin-top: 0.5rem;
+header p {
+    font-size: 0.9rem;
+    color: #c92a2a;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
+.container, 
 .main-content {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 15px;
 }
 
-/* EFECTO BLANCO Y NEGRO EN PUBLICACIONES (HOVER A COLOR) */
-.featured-article,
+/* Tarjetas y Noticias */
 .article-card,
 .news-item,
 .noticia {
     background: #fff;
-    padding: 2rem;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    
+    /* Efecto en escala de grises que pasa a color */
     filter: grayscale(100%);
-    transition: filter 0.4s ease, transform 0.3s ease;
+    transition: filter 0.3s ease;
 }
 
-/* Al pasar el cursor por encima, la noticia vuelve a full color */
-.featured-article:hover,
 .article-card:hover,
 .news-item:hover,
 .noticia:hover {
     filter: grayscale(0%);
 }
 
-.featured-article img,
 .article-card img,
 .news-item img,
 .noticia img {
-    display: block;
-    max-width: 100%;
+    width: 100%;
     height: auto;
+    display: block;
+    margin-bottom: 15px;
 }
 
-.featured-article h2 {
-    font-size: 1.8rem;
-    margin-top: 0;
-    color: #111;
+.article-card h2,
+.news-item h2,
+.noticia h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #000;
 }
 
 footer {
     text-align: center;
-    padding: 2rem;
-    color: #6c757d;
-    font-size: 0.9rem;
-    border-top: 1px solid #dee2e6;
-    margin-top: 3rem;
+    padding: 20px;
+    border-top: 1px solid #ccc;
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+/* Ajustes automáticos para Celulares (Android e iPhone) */
+@media (max-width: 768px) {
+    body {
+        padding: 0 5px;
+    }
+
+    header {
+        padding: 15px 10px;
+    }
+
+    .container, 
+    .main-content {
+        padding: 0 10px;
+    }
+
+    .article-card,
+    .news-item,
+    .noticia {
+        padding: 15px;
+    }
 }
