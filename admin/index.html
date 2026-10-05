@@ -25,7 +25,7 @@
 </head>
 <body>
 
-  <!-- FORMULARIO DE LOGIN -->
+  <!-- FORMULARIO DE ACCESO -->
   <div id="login-card" class="card">
     <h1>El Oráculo</h1>
     <p class="sub">Acceso al Panel de Administración</p>
@@ -33,17 +33,17 @@
     <form id="login-form">
       <div class="field">
         <label for="email">Correo electrónico</label>
-        <input type="email" id="email" required placeholder="tu@correo.com" />
+        <input type="email" id="email" value="periodismoeloraculo@gmail.com" required />
       </div>
       <div class="field">
         <label for="password">Contraseña</label>
-        <input type="password" id="password" required placeholder="••••••••" />
+        <input type="password" id="password" placeholder="••••••••" required />
       </div>
       <button type="submit">Ingresar al panel</button>
     </form>
   </div>
 
-  <!-- EDITOR DE ARTÍCULOS (SE MUESTRA TRAS INICIAR SESIÓN) -->
+  <!-- EDITOR DE ARTÍCULOS -->
   <div id="editor-card" class="card article-form hidden">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
       <h1 style="margin: 0;">Crear Artículo</h1>
@@ -72,9 +72,8 @@
   </div>
 
   <script>
-    // CREDANCIALES DE ACCESO (Las puedes cambiar cuando quieras)
-    const ADMIN_EMAIL = "admin@periodismoeloraculo.com";
-    const ADMIN_PASS = "Oraculo2026*"; // <--- Tu contraseña de acceso
+    // CONTRASEÑA AUTORIZADA
+    const CLAVE_CORRECTA = "Oraculo2026*";
 
     const loginCard = document.getElementById('login-card');
     const editorCard = document.getElementById('editor-card');
@@ -82,22 +81,20 @@
     const loginError = document.getElementById('login-error');
     const logoutBtn = document.getElementById('logout-btn');
 
-    // Verificar sesión iniciada
     if (localStorage.getItem('oraculo_logged_in') === 'true') {
       showEditor();
     }
 
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = document.getElementById('email').value.trim();
-      const pass = document.getElementById('password').value;
+      const pass = document.getElementById('password').value.trim();
 
-      if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+      if (pass === CLAVE_CORRECTA) {
         localStorage.setItem('oraculo_logged_in', 'true');
         loginError.classList.add('hidden');
         showEditor();
       } else {
-        loginError.textContent = "Correo o contraseña incorrectos.";
+        loginError.textContent = "Contraseña incorrecta. Recuerda incluir el asterisco (*).";
         loginError.classList.remove('hidden');
       }
     });
@@ -113,7 +110,6 @@
       editorCard.classList.remove('hidden');
     }
 
-    // Publicación del artículo
     document.getElementById('article-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const msg = document.getElementById('editor-msg');
@@ -121,7 +117,6 @@
       msg.textContent = "¡Noticia lista y publicada correctamente!";
       msg.classList.remove('hidden');
 
-      // Limpiar formulario tras publicar
       document.getElementById('article-form').reset();
       setTimeout(() => msg.classList.add('hidden'), 4000);
     });
