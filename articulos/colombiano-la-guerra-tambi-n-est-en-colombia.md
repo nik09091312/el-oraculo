@@ -1,7 +1,7 @@
 ---
 title: "¡Colombiano, la guerra también está en Colombia!"
 date: "2026-11-12"
-category: "opinion"
+category: "cultura"
 summary: "La guerra no solo es entre Irán e Israel; soluciona los problemas de tu país para poder aportar a otros países."
 image: ""
 ---
